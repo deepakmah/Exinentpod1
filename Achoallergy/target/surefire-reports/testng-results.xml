@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
+  <reporter-output>
+  </reporter-output>
+  <suite started-at="2026-03-22T19:50:26 IST" name="NatallergySuite" finished-at="2026-03-22T19:55:21 IST" duration-ms="294513">
+    <groups>
+    </groups>
+    <test started-at="2026-03-22T19:50:26 IST" name="NatAllergyE2E" finished-at="2026-03-22T19:55:21 IST" duration-ms="294513">
+      <class name="org.example.natallergy.NatallergyTest">
+        <test-method is-config="true" signature="setUpBrowser()[pri:0, instance:org.example.natallergy.NatallergyTest@6adbc9d]" started-at="2026-03-22T19:50:26 IST" name="setUpBrowser" finished-at="2026-03-22T19:50:53 IST" duration-ms="26813" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setUpBrowser -->
+        <test-method signature="natAllergyEndToEnd()[pri:0, instance:org.example.natallergy.NatallergyTest@6adbc9d]" started-at="2026-03-22T19:50:53 IST" name="natAllergyEndToEnd" description="Sitemap-driven cart (3–4 products), coupon, checkout through shipping, home search" finished-at="2026-03-22T19:55:20 IST" duration-ms="266930" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- natAllergyEndToEnd -->
+        <test-method is-config="true" signature="tearDownBrowser()[pri:0, instance:org.example.natallergy.NatallergyTest@6adbc9d]" started-at="2026-03-22T19:55:20 IST" name="tearDownBrowser" finished-at="2026-03-22T19:55:21 IST" duration-ms="671" status="PASS">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- tearDownBrowser -->
+      </class> <!-- org.example.natallergy.NatallergyTest -->
+    </test> <!-- NatAllergyE2E -->
+  </suite> <!-- NatallergySuite -->
+</testng-results>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [NatallergySuite]" guice-stage="DEVELOPMENT" verbose="0">
+  <test thread-count="5" name="NatAllergyE2E(failed)" verbose="0">
+    <classes>
+      <class name="org.example.natallergy.NatallergyTest">
+        <methods>
+          <include name="setUpBrowser"/>
+          <include name="tearDownBrowser"/>
+          <include name="natAllergyEndToEnd"/>
+        </methods>
+      </class> <!-- org.example.natallergy.NatallergyTest -->
+    </classes>
+  </test> <!-- NatAllergyE2E(failed) -->
+</suite> <!-- Failed suite [NatallergySuite] -->
