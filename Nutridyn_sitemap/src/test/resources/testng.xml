@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="NutriDyn-E2E" verbose="1" parallel="none">
+    <test name="End-to-end">
+        <classes>
+            <class name="nutridyn.NutridynE2ETest"/>
+        </classes>
+    </test>
+</suite>
