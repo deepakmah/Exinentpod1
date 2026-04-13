@@ -2,6 +2,7 @@ package nutridyn;
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.IOException;
@@ -87,6 +88,25 @@ public final class NutridynFlow {
     }
 
     /**
+     * True when the category listing shows at least one product tile (Magento 2 grid under {@code #maincontent}).
+     * Scoped to avoid matching unrelated {@code .product-item} nodes (e.g. minicart).
+     */
+    static boolean categoryListingHasVisibleProducts(WebDriver driver) {
+        List<WebElement> items = driver.findElements(
+                By.cssSelector("#maincontent .products li.product-item, #maincontent .products .product-item"));
+        for (WebElement el : items) {
+            try {
+                if (el.isDisplayed()) {
+                    return true;
+                }
+            } catch (StaleElementReferenceException ignored) {
+                // Re-query on next loop iteration if DOM refreshed
+            }
+        }
+        return false;
+    }
+
+    /**
      * Open 3 or 4 random storefront category URLs from the sitemap (logged-in patient session).
      * Each page gets a screenshot for the report; we do not add category pages to the cart.
      */
@@ -110,12 +130,44 @@ public final class NutridynFlow {
             Thread.sleep(2500);
             System.out.println("Opened category " + (i + 1) + ": " + curl);
             String slug = NutridynSitemap.categoryUrlSlug(curl);
+            boolean hasProducts = categoryListingHasVisibleProducts(driver);
+            if (!hasProducts) {
+                System.out.println("Issue: category appears to have no visible products — " + curl);
+            }
             NutridynReporting.takeScreenshot(
                     driver,
                     "Category_" + (i + 1) + "_" + slug,
-                    true,
-                    "Category page from sitemap (browse only, no add-to-cart).",
+                    hasProducts,
+                    hasProducts
+                            ? "Category page from sitemap (browse only, no add-to-cart)."
+                            : "Issue: Empty category — no products visible in the listing grid. Verify merchandising, visibility, or stock filters.",
                     curl);
+        }
+    }
+
+    /**
+     * Magento configurable PDPs expose {@code select.super-attribute-select} (names like {@code super_attribute[156]}).
+     * Add to Cart requires every required super attribute to have a non-empty value; IDs differ per product, so use class/name, not fixed ids.
+     */
+    static void selectConfigurableSuperAttributesIfPresent(WebDriver driver) throws InterruptedException {
+        List<WebElement> selects = driver.findElements(By.cssSelector("select.super-attribute-select"));
+        if (selects.isEmpty()) {
+            return;
+        }
+        for (WebElement sel : selects) {
+            if (!sel.isDisplayed() || !sel.isEnabled()) {
+                continue;
+            }
+            Select dropdown = new Select(sel);
+            for (WebElement opt : dropdown.getOptions()) {
+                String value = opt.getAttribute("value");
+                if (value != null && !value.isEmpty()) {
+                    dropdown.selectByValue(value);
+                    // Dependent attributes / spConfig may repopulate the next select
+                    Thread.sleep(600);
+                    break;
+                }
+            }
         }
     }
 
@@ -146,6 +198,8 @@ public final class NutridynFlow {
                         true,
                         "Product detail page opened from sitemap.",
                         purl);
+
+                selectConfigurableSuperAttributesIfPresent(driver);
 
                 if (driver.findElements(By.id("product-addtocart-button")).size() > 0) {
                     driver.findElement(By.id("product-addtocart-button")).click();
