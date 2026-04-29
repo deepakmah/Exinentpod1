@@ -1,0 +1,22 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="NatallergySuite" verbose="1">
+    <!-- Copied to System properties by @Listeners(NatallergySuiteListener.class) -->
+    <parameter name="natallergy.login.enabled" value="true"/>
+    <!-- Set to false to skip guest checkout/shipping in E2E (no checkout_after_shipping_continue in HTML report). -->
+    <!-- <parameter name="natallergy.checkout.shipping.enabled" value="false"/> -->
+    <test name="NatAllergyE2E">
+        <classes>
+            <class name="org.example.natallergy.NatallergyTest"/>
+        </classes>
+    </test>
+    <test name="NatAllergyAccountWeb">
+        <classes>
+            <class name="org.example.natallergy.NatallergyAccountWebTests"/>
+        </classes>
+    </test>
+    <test name="NatAllergyCartWeb">
+        <classes>
+            <class name="org.example.natallergy.NatallergyCartWebTests"/>
+        </classes>
+    </test>
+</suite>
